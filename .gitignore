@@ -1,0 +1,17 @@
+.idea/
+
+# Para este setup de estudo nao precisamos persistir o estado 
+	# Recursos aws sao destruidos automaticamente
+.terraform 
+
+terraform.tfstate*
+
+######
+
+yarn-error.log
+node_modules/
+
+playground/
+
+# Lambda function temp packages
+*_payload.zip
