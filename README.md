@@ -1,7 +1,7 @@
 fiap-videoslice API Gateway and Authentication setup
 ====================================================
 
-## Criação de Integração App<->ApiGateway e infraestrutura de autorização
+## Criação de Integração App<->ApiGateway e infraestrutura de autorização 
 
 Infrastructure as Code. Utiliza Terraform para a criação/manutenção dos recursos na nuvem AWS.
 
