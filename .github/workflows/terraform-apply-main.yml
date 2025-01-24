@@ -29,10 +29,10 @@ jobs:
         id: cognito-info
         run: ./utils/get-user-pool-info.sh ${{vars.COGNITO_USER_POOL}} >> $GITHUB_OUTPUT
 
-      - name: Get App LoadBalancer Listener - Pagamento
+      - name: Get App LoadBalancer Listener - Engine
         id: lb-listener-info-engine
         run: ./utils/find-load-balancer.sh ${{vars.SERVICE_PORT_ENGINE}} >> $GITHUB_OUTPUT
-      - name: Get App LoadBalancer Listener - Pedidos
+      - name: Get App LoadBalancer Listener - Web Api
         id: lb-listener-info-web-api
         run: ./utils/find-load-balancer.sh ${{vars.SERVICE_PORT_WEB_API}} >> $GITHUB_OUTPUT
 
