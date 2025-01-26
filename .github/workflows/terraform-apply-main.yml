@@ -1,10 +1,10 @@
 name: Terraform apply
-run-name: Create API Gateway setup
-on: push  # TEMPORARY! Enable only on push to main
-#  push:
-#    branches:
-#      - main      # Apenas on push na main (PR aceito)
-#  workflow_dispatch: {}
+run-name: Deploy API Gateway and Authentication
+on:
+  push:
+    branches:
+      - main      # Apenas on push na main (PR aceito)
+  workflow_dispatch: {}
 
 jobs:
   get-service-info:
