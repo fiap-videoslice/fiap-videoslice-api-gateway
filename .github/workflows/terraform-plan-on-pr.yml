@@ -1,11 +1,11 @@
 name: Terraform plan
 run-name: API Gateway setup Terraform plan
-on: push  # Temporary for testing!  Enable only on PR
-#  pull_request:
-#    types:
-#      - opened
-#      - synchronize
-#      - reopened
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   get-service-info:

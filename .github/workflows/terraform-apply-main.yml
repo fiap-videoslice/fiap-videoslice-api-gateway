@@ -1,10 +1,10 @@
 name: Terraform apply
 run-name: Create API Gateway setup
-on:
-  push:
-    branches:
-      - main      # Apenas on push na main (PR aceito)
-  workflow_dispatch: {}
+on: push  # TEMPORARY! Enable only on push to main
+#  push:
+#    branches:
+#      - main      # Apenas on push na main (PR aceito)
+#  workflow_dispatch: {}
 
 jobs:
   get-service-info:
@@ -26,7 +26,7 @@ jobs:
         id: cognito-info
         run: ./utils/get-user-pool-info.sh ${{vars.COGNITO_USER_POOL}} >> $GITHUB_OUTPUT
 
-      - name: Get App LoadBalancer Listener - Web Api
+      - name: Get App LoadBalancer Listener - WebApi
         id: lb-listener-info-web-api
         run: ./utils/find-load-balancer.sh ${{vars.SERVICE_PORT_WEB_API}} >> $GITHUB_OUTPUT
 
@@ -41,7 +41,7 @@ jobs:
     with:
       TERRAFORM_COMMAND: apply --auto-approve
 
-      TERRAFORM_VARS: -var http_api_id=${{needs.get-service-info.outputs.http_api_id}} -var cognito_user_pool_client_id=${{needs.get-service-info.outputs.cognito_user_pool_client_id}} -var load_balancer_web_api_arn=${{needs.get-service-info.outputs.load_balancer_web_api_arn}}
+      TERRAFORM_VARS: -var cognito_user_pool_client_id=${{needs.get-service-info.outputs.cognito_user_pool_client_id}} -var load_balancer_web_api_arn=${{needs.get-service-info.outputs.load_balancer_web_api_arn}}
 
       AWS_REGION: us-east-1
       TF_STATE_BUCKET_NAME: ${{vars.TF_STATE_BUCKET_NAME}}
