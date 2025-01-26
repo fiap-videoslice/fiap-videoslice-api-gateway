@@ -23,9 +23,6 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
       # Getting info from pre-requisite services
-      - name: Get API Gateway Info
-        id: api-gw-info
-        run: ./utils/get-external-api-info.sh ${{vars.API_GATEWAY_NAME}} >> $GITHUB_OUTPUT
       - name: Get Cognito UserPool Info
         id: cognito-info
         run: ./utils/get-user-pool-info.sh ${{vars.COGNITO_USER_POOL}} >> $GITHUB_OUTPUT

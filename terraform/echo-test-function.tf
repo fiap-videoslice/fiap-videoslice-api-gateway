@@ -26,7 +26,7 @@ resource "aws_lambda_function" "sample-echo-function" {
 }
 
 resource "aws_apigatewayv2_integration" "http-echo-api-integration" {
-  api_id           = data.aws_apigatewayv2_api.http-api.id
+  api_id           = aws_apigatewayv2_api.http-api.id
   integration_type = "AWS_PROXY"
 
   connection_type           = "INTERNET"
@@ -41,14 +41,14 @@ resource "aws_apigatewayv2_integration" "http-echo-api-integration" {
 }
 
 resource "aws_apigatewayv2_route" "http-echo-api-route" {
-  api_id    = data.aws_apigatewayv2_api.http-api.id
+  api_id    = aws_apigatewayv2_api.http-api.id
   route_key = "ANY /echo"
 
   target = "integrations/${aws_apigatewayv2_integration.http-echo-api-integration.id}"
 }
 
 resource "aws_apigatewayv2_route" "http-echo-auth-api-route" {
-  api_id    = data.aws_apigatewayv2_api.http-api.id
+  api_id    = aws_apigatewayv2_api.http-api.id
   route_key = "ANY /echo-auth"
 
   authorization_type = "CUSTOM"
@@ -62,7 +62,7 @@ resource "aws_lambda_permission" "exec-echo-lambda-permission" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.sample-echo-function.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:us-east-1:${data.aws_caller_identity.current.account_id}:${data.aws_apigatewayv2_api.http-api.id}/*/*/echo"
+  source_arn    = "arn:aws:execute-api:us-east-1:${data.aws_caller_identity.current.account_id}:${aws_apigatewayv2_api.http-api.id}/*/*/echo"
 }
 
 resource "aws_lambda_permission" "exec-echo-auth-lambda-permission" {
@@ -70,5 +70,5 @@ resource "aws_lambda_permission" "exec-echo-auth-lambda-permission" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.sample-echo-function.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:us-east-1:${data.aws_caller_identity.current.account_id}:${data.aws_apigatewayv2_api.http-api.id}/*/*/echo-auth"
+  source_arn    = "arn:aws:execute-api:us-east-1:${data.aws_caller_identity.current.account_id}:${aws_apigatewayv2_api.http-api.id}/*/*/echo-auth"
 }

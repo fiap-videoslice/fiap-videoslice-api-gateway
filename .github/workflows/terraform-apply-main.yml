@@ -22,9 +22,6 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
       # Getting info from pre-requisite services
-      - name: Get API Gateway Info
-        id: api-gw-info
-        run: ./utils/get-external-api-info.sh ${{vars.API_GATEWAY_NAME}} >> $GITHUB_OUTPUT
       - name: Get Cognito UserPool Info
         id: cognito-info
         run: ./utils/get-user-pool-info.sh ${{vars.COGNITO_USER_POOL}} >> $GITHUB_OUTPUT
@@ -37,7 +34,6 @@ jobs:
         run: ./utils/find-load-balancer.sh ${{vars.SERVICE_PORT_WEB_API}} >> $GITHUB_OUTPUT
 
     outputs:
-      http_api_id: ${{steps.api-gw-info.outputs.API_ID}}
       cognito_user_pool_client_id: ${{steps.cognito-info.outputs.USER_POOL_CLIENT_ID}}
       cognito_user_pool_client_secret: ${{steps.cognito-info.outputs.USER_POOL_CLIENT_SECRET}}
       load_balancer_engine_arn: ${{steps.lb-listener-info-engine.outputs.LISTENER_ARN}}
