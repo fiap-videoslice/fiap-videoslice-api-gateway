@@ -24,14 +24,14 @@ resource "aws_lambda_permission" "exec-token-lambda-permission" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.token-function.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:us-east-1:${data.aws_caller_identity.current.account_id}:${data.aws_apigatewayv2_api.http-api.id}/*/*/token"
+  source_arn    = "arn:aws:execute-api:us-east-1:${data.aws_caller_identity.current.account_id}:${aws_apigatewayv2_api.http-api.id}/*/*/token"
 }
 
 
 # Route
 
 resource "aws_apigatewayv2_integration" "http-token-integration" {
-  api_id           = data.aws_apigatewayv2_api.http-api.id
+  api_id           = aws_apigatewayv2_api.http-api.id
   integration_type = "AWS_PROXY"
 
   connection_type           = "INTERNET"
@@ -42,7 +42,7 @@ resource "aws_apigatewayv2_integration" "http-token-integration" {
 }
 
 resource "aws_apigatewayv2_route" "http-token-api-route" {
-  api_id    = data.aws_apigatewayv2_api.http-api.id
+  api_id    = aws_apigatewayv2_api.http-api.id
   route_key = "ANY /token"
 
   authorization_type = "CUSTOM"

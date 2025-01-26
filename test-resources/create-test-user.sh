@@ -9,8 +9,8 @@ fi
 
 email=$1
 name="$2"
-password="$4"
-groupName=$3
+password="$3"
+groupName=$4
 
 # Assuming there is exactly 1 pool matching the query
 poolId="$(aws cognito-idp list-user-pools --max-results 10 --query 'UserPools[?Name==`videoslice-logins`].Id | [0]' | tr -d '"')"
