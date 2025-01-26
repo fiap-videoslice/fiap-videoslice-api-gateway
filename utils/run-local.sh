@@ -2,7 +2,6 @@
 
 tmp_info=/tmp/videoslice-auth-svc.deploy-temp.txt
 port_webapi=8090
-port_engine=8091
 
 if [ "$1" == "reuse_info" ]
 then
@@ -14,13 +13,6 @@ then
 else
 
   ./find-load-balancer.sh $port_webapi | sed 's/LISTENER_ARN=/LISTENER_ARN_WEBAPI=/' > $tmp_info
-  if [ $? -ne 0 ]
-  then
-    echo "Error getting service info"
-    exit 1
-  fi
-
-  ./find-load-balancer.sh $port_webapi | sed 's/LISTENER_ARN=/LISTENER_ARN_ENGINE=/' >> $tmp_info
   if [ $? -ne 0 ]
   then
     echo "Error getting service info"
@@ -44,8 +36,7 @@ set -x
 
 terraform apply -var cognito_user_pool_client_id="$USER_POOL_CLIENT_ID" \
 	        -var cognito_user_pool_client_secret="$USER_POOL_CLIENT_SECRET" \
-		      -var load_balancer_web_api_arn="$LISTENER_ARN_WEBAPI" \
-		      -var load_balancer_engine_arn="$LISTENER_ARN_ENGINE"
+		      -var load_balancer_web_api_arn="$LISTENER_ARN_WEBAPI"
 
 if [ $? -eq 0 ]
 then

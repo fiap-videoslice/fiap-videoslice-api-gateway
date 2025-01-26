@@ -13,8 +13,3 @@ variable "load_balancer_web_api_arn" {
   type = string
   description = "ARN of the load balancer listener (8090) created for the EKS cluster - WebAPI service"
 }
-
-variable "load_balancer_engine_arn" {
-  type = string
-  description = "ARN of the load balancer listener (8091) created for the EKS cluster - Engine Service"
-}
