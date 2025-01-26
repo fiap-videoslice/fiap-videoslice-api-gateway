@@ -1,11 +1,11 @@
 name: Terraform plan
 run-name: API Gateway setup Terraform plan
-on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+on: push  # Temporary for testing!  Enable only on PR
+#  pull_request:
+#    types:
+#      - opened
+#      - synchronize
+#      - reopened
 
 jobs:
   get-service-info:
@@ -27,12 +27,11 @@ jobs:
         id: cognito-info
         run: ./utils/get-user-pool-info.sh ${{vars.COGNITO_USER_POOL}} >> $GITHUB_OUTPUT
 
-      - name: Get App LoadBalancer Listener - Pedidos
+      - name: Get App LoadBalancer Listener - WebApi
         id: lb-listener-info-web-api
         run: ./utils/find-load-balancer.sh ${{vars.SERVICE_PORT_WEB_API}} >> $GITHUB_OUTPUT
 
     outputs:
-      http_api_id: ${{steps.api-gw-info.outputs.API_ID}}
       cognito_user_pool_client_id: ${{steps.cognito-info.outputs.USER_POOL_CLIENT_ID}}
       cognito_user_pool_client_secret: ${{steps.cognito-info.outputs.USER_POOL_CLIENT_SECRET}}
       load_balancer_web_api_arn: ${{steps.lb-listener-info-web-api.outputs.LISTENER_ARN}}
@@ -43,7 +42,7 @@ jobs:
     with:
       TERRAFORM_COMMAND: plan
 
-      TERRAFORM_VARS: -var http_api_id=${{needs.get-service-info.outputs.http_api_id}} -var cognito_user_pool_client_id=${{needs.get-service-info.outputs.cognito_user_pool_client_id}} -var load_balancer_web_api_arn=${{needs.get-service-info.outputs.load_balancer_web_api_arn}}
+      TERRAFORM_VARS: -var cognito_user_pool_client_id=${{needs.get-service-info.outputs.cognito_user_pool_client_id}} -var load_balancer_web_api_arn=${{needs.get-service-info.outputs.load_balancer_web_api_arn}}
 
       AWS_REGION: us-east-1
       TF_STATE_BUCKET_NAME: ${{vars.TF_STATE_BUCKET_NAME}}
